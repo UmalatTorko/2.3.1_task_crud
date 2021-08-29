@@ -6,7 +6,7 @@
     <title>Список пользователей</title>
     <style>
         table {
-            width: 90%;
+            width: 100%;
             margin-bottom: 20px;
             border: 1px solid #dddddd;
             border-collapse: collapse;
@@ -25,13 +25,13 @@
         }
 
         .container {
-            width: 40%;
+            width: 50%;
             border-radius: 5px;
             background-color: #f2f2f2;
             padding: 40px;
         }
 
-        input[type=button] {
+        input {
             background-color: #4CAF50;
             color: white;
             padding: 12px 20px;
@@ -41,14 +41,22 @@
             float: left;
         }
 
-        input[type=button]:hover {
+        input:hover {
             background-color: #45a049;
+        }
+
+        .del {
+            background-color: #e00f0f;
+        }
+
+        .del:hover {
+            background-color: #ad0c0c;
         }
     </style>
 </head>
 <body>
 <div class="container">
-    <h2 class="h2">Список пользователей</h2>
+    <h2>Список пользователей</h2>
 
     <table>
         <tr>
@@ -63,14 +71,14 @@
             <td th:text="${user.name}"></td>
             <td th:text="${user.surname}"></td>
             <td th:text="${user.email}"></td>
-            <td>
+            <th>
                 <form th:action="@{/{id}/edit(id=${user.id})}">
-                    <button type="submit">Редактировать</button>
+                    <input type="submit" value="Редактировать"/>
                 </form>
                 <form th:method="DELETE" th:action="@{/{id}(id=${user.id})}">
-                    <button type="submit">Удалить</button>
+                    <input class="del" type="submit" value="Удалить"/>
                 </form>
-            </td>
+            </th>
         </tr>
     </table>
 

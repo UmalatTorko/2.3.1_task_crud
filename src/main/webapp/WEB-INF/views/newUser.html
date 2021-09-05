@@ -11,7 +11,7 @@
         }
 
         input[type=text], select, textarea {
-            width: 80%;
+            width: 20%;
             padding: 12px;
             border: 1px solid #ccc;
             border-radius: 4px;
@@ -39,7 +39,7 @@
         }
 
         .container {
-            width: 30%;
+            width: 100%;
             border-radius: 5px;
             background-color: #f2f2f2;
             padding: 40px;
@@ -49,7 +49,18 @@
 <body>
 
 <div class="container">
-    <form th:method="POST" th:action="@{/}" th:object="${user}">
+    <form th:method="POST" th:action="@{/admin/save}" th:object="${user}">
+
+
+        <label for="login">Логин </label>
+        <input type="text" th:field="*{username}" id="login"/>
+
+        <br/><br/>
+
+        <label for="password">Пароль </label>
+        <input type="text" th:field="*{password}" id="password"/>
+
+        <br/><br/>
 
         <label for="name">Имя </label>
         <input type="text" th:field="*{name}" id="name"/>
@@ -65,8 +76,14 @@
         <input type="text" th:field="*{email}" id="email"/>
 
         <br/><br/>
+        <p>Права доступа:</p>
 
-        <input type="submit" name="Сохранить"/>
+        <input type="checkbox" name="roles" value="ROLE_USER" id="user" th:text="Пользователь"/>
+        <br/>
+        <input type="checkbox" name="roles" value="ROLE_ADMIN" id="admin" th:text="Администратор"/>
+
+        <br/><br/>
+        <input type="submit" value="Добавить"/>
 
     </form>
 

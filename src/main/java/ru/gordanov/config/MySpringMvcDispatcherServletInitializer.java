@@ -36,6 +36,7 @@ public class MySpringMvcDispatcherServletInitializer extends AbstractAnnotationC
                 new HiddenHttpMethodFilter()).addMappingForUrlPatterns(null ,true, "/*");
     }
 
+//    кодировка
     @Override
     protected Filter[] getServletFilters() {
         CharacterEncodingFilter characterEncodingFilter = new CharacterEncodingFilter();

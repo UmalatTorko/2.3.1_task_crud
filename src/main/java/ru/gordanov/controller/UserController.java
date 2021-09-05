@@ -1,52 +1,70 @@
 package ru.gordanov.controller;
 
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ru.gordanov.model.User;
 import ru.gordanov.service.UserService;
 
+import java.security.Principal;
+
 @Controller
 public class UserController {
 
     private final UserService service;
 
-    public UserController(UserService service) {
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+
+    public UserController(UserService service, BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.service = service;
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
     @GetMapping("/")
-    public String index(Model model) {
-        model.addAttribute("users", service.getAllUsers());
+    public String index() {
         return "index";
     }
 
-    @GetMapping("/new")
-    public String newUser(@ModelAttribute("user") User user ) {
+    @GetMapping("/user")
+    public String showUser(Principal principal, Model model) {
+        model.addAttribute("user", service.getUserByUsername(principal.getName()));
+        return "showUser";
+    }
+
+    @GetMapping("/admin")
+    public String index(Model model) {
+        model.addAttribute("users", service.getAllUsers());
+        return "adminPage";
+    }
+
+    @GetMapping("/admin/new")
+    public String newUser(@ModelAttribute("user") User user) {
         return "newUser";
     }
 
-    @PostMapping()
+    @PostMapping("/admin/save")
     public String saveUser(@ModelAttribute("user") User user) {
+        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         service.save(user);
-        return "redirect:/";
+        return "redirect:/admin";
     }
 
-    @GetMapping("/{id}/edit")
+    @GetMapping("/admin/{id}/edit")
     public String edit(@PathVariable("id") long id, Model model) {
         model.addAttribute("user", service.getUserById(id));
         return "updateUser";
     }
 
-    @PatchMapping()
+    @PatchMapping("/admin/update")
     public String update(@ModelAttribute("user") User user) {
         service.update(user);
-        return "redirect:/";
+        return "redirect:/admin";
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/admin/{id}")
     public String delete(@PathVariable("id") long id) {
         service.delete(id);
-        return "redirect:/";
+        return "redirect:/admin";
     }
 }

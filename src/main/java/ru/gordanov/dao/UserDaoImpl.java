@@ -1,6 +1,5 @@
 package ru.gordanov.dao;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import ru.gordanov.model.User;
 
@@ -24,7 +23,7 @@ public class UserDaoImpl implements UserDao{
 
     @Override
     public void save(User user) {
-            entityManager.persist(user);
+        entityManager.persist(user);
     }
 
     @Override
@@ -39,8 +38,15 @@ public class UserDaoImpl implements UserDao{
 
     @Override
     public void delete(long id) {
-        entityManager.createQuery("DELETE FROM User WHERE id = :id")
-                .setParameter("id", id)
-                .executeUpdate();
+       User user = entityManager.find(User.class, id);
+       entityManager.remove(user);
+    }
+
+    @Override
+    public User getUserByUsername(String username) {
+        User user = (User) entityManager.createQuery("SELECT u FROM User u WHERE u.username = :username")
+                .setParameter("username", username)
+                .getResultList().stream().findAny().orElse(null);
+        return user;
     }
 }

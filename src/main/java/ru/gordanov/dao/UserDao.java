@@ -1,5 +1,6 @@
 package ru.gordanov.dao;
 
+import ru.gordanov.model.Role;
 import ru.gordanov.model.User;
 
 import java.util.List;
@@ -14,4 +15,6 @@ public interface UserDao {
     void update(User user);
 
     void delete(long id);
+
+    User getUserByUsername(String username);
 }
